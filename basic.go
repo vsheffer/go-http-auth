@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"crypto/subtle"
 	"encoding/base64"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -75,6 +76,7 @@ func (a *BasicAuth) RequireAuth(w http.ResponseWriter, r *http.Request) {
 */
 func (a *BasicAuth) Wrap(wrapped AuthenticatedHandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("headers = %+v", r.Header)
 		if username := a.CheckAuth(r); username == "" {
 			a.RequireAuth(w, r)
 		} else {
